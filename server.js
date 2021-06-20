@@ -1,1 +1,14 @@
-console.log("This is my node app !")
+//console.log("This is my node app !")
+
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+    res.end('This is my server response!');
+});
+
+server.listen(process.env.PORT || 3000);
+
+
+
+
+
