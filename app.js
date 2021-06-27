@@ -1,7 +1,21 @@
+//MONGODB PASSWORD : 327914@Kanika
+//MONGODB CONNECTION : mongodb+srv://kanika:<password>@cluster0.bmeu1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
+mongoose.connect('mongodb+srv://kanika:327914@Kanika@cluster0.bmeu1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+,{useNewUrlParser: true,
+    useUnifiedTopology: true})
+    .then(() => {
+        console.log('Successfully connected to MongoDB Atlas!');
+    })
+    .catch((error) => {
+        console.log('Unable to connect to MongoDB Atlas!');
+        console.error(error);
+    });
 
 //to resolve cors error add headers to response object
 app.use((req,res,next)=>{
