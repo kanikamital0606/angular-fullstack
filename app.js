@@ -46,17 +46,20 @@ app.post('/api/stuff',(req,res,next)=>{
         price: req.body.price,
         userId: req.body.userId
     });
+    //create a new instance of your  Thing  model, 
+    //That model has a  save()  method which simply saves your Thing to the database.
     //to save things to database;    
     //save() method returns a promise, so in our  then()  block, 
-    //we send back a success response, and 
-    //in catch() block, we send back an error response with the error thrown by Mongoose.
     thing.save().then(
         () => {
+            //we send back a success response, and succefull data creation 
             res.status(201).json({
             message: 'Post saved successfully!'
         });
     }
     ).catch(
+        //in catch() block, we send back an error response with the error thrown by Mongoose.
+
         (error) => {
             res.status(400).json({
                 error: error
@@ -65,11 +68,31 @@ app.post('/api/stuff',(req,res,next)=>{
     );
 });
 
-//create midleware add string corresponding to end point
+//Retrieving a specific Thing
+app.get('/api/stuff/:id', (req,res,next)=>{
+    Thing.findOne({
+        _id: req.params.id
+    }).then(
+        (thing)=>{
+            res.status(200).json(thing);
+        }
+    ).catch(
+        (error)=>{
+            res.status(404).json({
+                error:error
+            });
+        }
+    );
+});
+//Now we can implement our GET route to return all of the Things in the database:
 app.use('/api/stuff',(req,res,next)=>{
     //create array of stuff => delete array of stuff
-    //to retrieve sata call thing model and find() method, 
-    //in find() method we have options object which allow us to search things
+    
+    /***************
+    find()  method on Mongoose model to return an array containing all of the  Things  in our database. 
+    Now, if you add a new  Thing , it should appear immediately in your Stuff for Sale page.
+    **************/
+    
     Thing.find().then(
         (things) => {
             res.status(200).json(things);
@@ -81,8 +104,6 @@ app.use('/api/stuff',(req,res,next)=>{
                 });
             }
         );
-        //sent back as JSON data
-        res.status(200).json(stuff);
 });
 
 module.exports = app;
