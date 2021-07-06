@@ -84,6 +84,31 @@ app.get('/api/stuff/:id', (req,res,next)=>{
         }
     );
 });
+
+//to update either use put or patch 
+app.put('/api/stuff', (req,res,next)){
+    const thing = new Thing({
+        _id: req.params.id,
+        title: req.body.title,
+        description: req.body.description,
+        imageUrl: req.body.imageUrl,
+        price: req.body.price,
+        userId: req.body.userId
+    });
+    Thing.updateOne({_id: req.params.id}, thing).then(
+        () => {
+            res.status(201).json({
+                message: 'Thing Updated Successfully !'
+            });
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+}
 //Now we can implement our GET route to return all of the Things in the database:
 app.use('/api/stuff',(req,res,next)=>{
     //create array of stuff => delete array of stuff
