@@ -86,9 +86,9 @@ app.get('/api/stuff/:id', (req,res,next)=>{
 });
 
 //to update either use put or patch 
-app.put('/api/stuff', (req,res,next)){
+app.put('/api/stuff/:id', (req, res, next) => {
     const thing = new Thing({
-        _id: req.params.id,
+        _id: req.params.id ,
         title: req.body.title,
         description: req.body.description,
         imageUrl: req.body.imageUrl,
@@ -108,7 +108,25 @@ app.put('/api/stuff', (req,res,next)){
             });
         }
     );
-}
+});
+
+//Time to add one last route — the DELETE route:
+app.delete('/api/stuff/:id', (req, res, next) => {
+    Thing.deleteOne({_id: req.params.id}).then(
+        ()=>{
+            res.status(200).json({
+                message: 'Deleted!'
+            });
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+});
+
 //Now we can implement our GET route to return all of the Things in the database:
 app.use('/api/stuff',(req,res,next)=>{
     //create array of stuff => delete array of stuff
